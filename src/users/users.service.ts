@@ -60,4 +60,7 @@ export class UsersService {
   getHello() {
     return "hello";
   }
+  writeAll(){
+    return this.userRepo.find();
+  }
 }

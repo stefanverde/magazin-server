@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService/*, MailService */} from './app.service';
+import { AppService} from './app.service';
 
 @Controller()
 export class AppController {
@@ -21,12 +21,3 @@ export class UserController {
   }
 }
 
-// @Controller('mail')
-// export class MailerController {
-//   constructor(private readonly mailerService: MailService) {}
-
-//   @Get('/sendMail')
-//   sendMail(): void {
-//     return this.mailerService.sendMail();
-//   }
-// }

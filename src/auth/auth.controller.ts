@@ -1,5 +1,5 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 
@@ -13,4 +13,9 @@ export class AuthController {
     console.log(authLoginDto)
     return this.authService.login(authLoginDto);
   }
+
+  // @Get('/by-email/:email')
+  // getByEmail(@Param('email') email: string) {
+  //   return this.usersService.findByEmail(email);
+  // }
 }

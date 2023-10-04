@@ -34,8 +34,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+
   @UseGuards(JwtAuthGuard)
-  @Get('/findAll')
+  @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
@@ -65,10 +66,5 @@ export class UsersController {
   @Delete('/deleteUser/:id')
   delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.delete(id);
-  }
-
-  @Get("hello")
-  getHello() {
-    return {message: this.usersService.getHello()};
   }
 }
