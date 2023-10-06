@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ItemsModule } from './items/items.module';
 import { Item } from './items/entities/items.entity';
+import { MailModule } from './mail/mail.module';
 
 const ENTITIES = [User, Item];
 
@@ -46,6 +47,7 @@ const ENTITIES = [User, Item];
     UsersModule,
     AuthModule,
     ItemsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
