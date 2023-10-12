@@ -5,21 +5,22 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsOptional } from 'class-validator';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  role: string;
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
 
   @Column({ nullable: false, unique: true })
   email: string;
 
   @Column()
-  @IsOptional()
   password: string;
 
   @CreateDateColumn()
@@ -28,9 +29,5 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column({ nullable: true })
-  firstName: string;
-
-  @Column({ nullable: true })
-  lastName: string;
+  
 }

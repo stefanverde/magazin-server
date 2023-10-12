@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { log } from 'console';
+import passport from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -19,11 +21,8 @@ export class UsersService {
     if (foundUser) {
       throw new BadRequestException('User already exists');
     }
-
     const hash = await bcrypt.hash(createUserDto.password, 10);
-
     const hashedUser = { ...createUserDto, password: hash };
-
     return this.userRepo.save(hashedUser);
   }
 
@@ -49,6 +48,16 @@ export class UsersService {
     return this.userRepo.delete(id);
   }
 
+  async updatePassword(id: string, data: UpdateUserDto) {
+    const hash = await bcrypt.hash(data.password, 10);
+
+    await this.userRepo.update(id, {
+      password: hash,
+    });
+
+    return this.findOne(id);
+  }
+
   findByEmail(email: string) {
     return this.userRepo.findOne({
       where: {
@@ -58,9 +67,9 @@ export class UsersService {
   }
 
   getHello() {
-    return "hello";
+    return 'hello';
   }
-  writeAll(){
+  writeAll() {
     return this.userRepo.find();
   }
 }

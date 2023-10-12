@@ -41,12 +41,4 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
-
-  // findByEmail(email: string) {
-  //   return this.userRepo.findOne({
-  //     where: {
-  //       email,
-  //     },
-  //   });
-  // }
 }

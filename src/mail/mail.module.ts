@@ -4,9 +4,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailController } from './mail.controller';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
+    UsersModule,
     MailerModule.forRootAsync ({
       useFactory: async () => ({
         transport:{
@@ -27,7 +29,8 @@ import { MailController } from './mail.controller';
           },
         },
       }),
-    })
+    }),
+    
   ],
   providers: [MailService],
   exports: [MailService],

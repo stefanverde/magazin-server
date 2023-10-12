@@ -21,6 +21,8 @@ export class CreateUserRequestDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+
 }
 
 @Exclude()

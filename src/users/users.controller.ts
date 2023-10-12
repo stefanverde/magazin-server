@@ -20,6 +20,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { log } from 'console';
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,13 +31,11 @@ export class UsersController {
   @UseInterceptors(new TransformInterceptor(CreateUserResponseDto))
   @ApiOkResponse({ type: CreateUserResponseDto })
   create(@Body() createUserDto: CreateUserRequestDto) {
-    // console.log('createUserDto', createUserDto);
     return this.usersService.create(createUserDto);
   }
 
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
+  // @UseGuards(JwtAuthGuard)
+  @Get("/find-all")
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
@@ -47,19 +46,27 @@ export class UsersController {
     return this.usersService.findByEmail(email);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/:id')
+  //@UseGuards(JwtAuthGuard)
+  @Get('/details/:id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Put('/:id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() project: UpdateUserDto,
   ) {
     return this.usersService.update(id, project);
+  }
+
+  @Put('/update-password/:id')
+  updatePassword(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() data: UpdateUserDto,
+  ) {
+    return this.usersService.updatePassword(id, data);
   }
 
   @UseGuards(JwtAuthGuard)
