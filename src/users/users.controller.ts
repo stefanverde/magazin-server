@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -21,10 +20,7 @@ import {
 } from './dto/create-user-request.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import * as jwt from 'jsonwebtoken';
-import * as crypto from 'crypto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -38,34 +34,16 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  @Get('/find-all')
-  findAll(): Promise<User[]> {
-    return this.usersService.findAll();
-  }
-
-  // @UseGuards(JwtAuthGuard)
   @Get('/by-email/:email')
   async getByEmail(@Param('email') email: string) {
     const user = await this.usersService.findByEmail(email);
-
-    // console.log(user);
     return user;
   }
-
-  //@UseGuards(JwtAuthGuard)
   @Get('/details/:id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
-  // @Put('/update-password/:id')
-  // updatePassword(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() data: UpdateUserDto,
-  // ) {
-  //   return this.usersService.updatePassword(id, data);
-  // }
   @Put('/update-password')
   async updatePassword(
     @Query('token') token: string,

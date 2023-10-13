@@ -52,15 +52,6 @@ export class UsersService {
     return this.userRepo.delete(id);
   }
 
-  // async updatePassword(id: string, data: UpdateUserDto) {
-  //   const hash = await bcrypt.hash(data.password, 10);
-
-  //   await this.userRepo.update(id, {
-  //     password: hash,
-  //   });
-
-  //   return this.findOne(id);
-  // }
   async updatePassword(token: string, data: UpdateUserDto): Promise<string> {
     try {
       const decodedToken = jwt.verify(decodeURI(token), 'secret-key');

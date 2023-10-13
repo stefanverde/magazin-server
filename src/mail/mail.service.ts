@@ -1,13 +1,9 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import {
-  BadRequestException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import * as jwt from 'jsonwebtoken';
-import * as crypto from 'crypto';
 @Injectable()
 export class MailService {
   private secretKey: string;
