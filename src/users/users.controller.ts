@@ -8,6 +8,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   UnauthorizedException,
   UseGuards,
   UseInterceptors,
@@ -23,7 +24,8 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import * as jwt from 'jsonwebtoken';
-// import * as crypto from "crypto";
+import * as crypto from 'crypto';
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -57,15 +59,6 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  @Put('/:id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() project: UpdateUserDto,
-  ) {
-    return this.usersService.update(id, project);
-  }
-
   // @Put('/update-password/:id')
   // updatePassword(
   //   @Param('id', ParseUUIDPipe) id: string,
@@ -73,27 +66,12 @@ export class UsersController {
   // ) {
   //   return this.usersService.updatePassword(id, data);
   // }
-  @Put('/update-password/:token')
+  @Put('/update-password')
   async updatePassword(
-    @Param('token') token: string,
+    @Query('token') token: string,
     @Body() data: UpdateUserDto,
   ): Promise<string> {
-    try {
-
-      const decodedToken = jwt.verify(token,'secret-key');
-      const userId = decodedToken['userId'];
-
-      const user = await this.findOne(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-
-      await this.usersService.updatePassword(userId, data);
-
-      return 'Password updated successfully!';
-    } catch (error) {
-      throw new UnauthorizedException('Invalid or expired token');
-    }
+    return this.usersService.updatePassword(token, data);
   }
 
   @UseGuards(JwtAuthGuard)

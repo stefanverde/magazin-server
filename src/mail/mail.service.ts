@@ -1,5 +1,9 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import * as jwt from 'jsonwebtoken';
@@ -11,22 +15,32 @@ export class MailService {
     private readonly mailerService: MailerService,
     private readonly usersService: UsersService,
   ) {
-    this.secretKey = crypto.randomBytes(32).toString('hex');
+    this.secretKey = 'secret-key';
   }
 
-  async sendMail(dbEmail: string): Promise<void> {
-    const user = await this.usersService.findByEmail(dbEmail);
-    console.log(user);
-    // const resetToken = generateResetToken();
-    const token = jwt.sign({ userId: user.id }, this.secretKey, {
+  async sendMail(email: string): Promise<void> {
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) {
+      console.log('User not found');
+
+      return;
+    }
+
+    let token = jwt.sign({ userId: user.id }, 'secret-key', {
       expiresIn: '10m',
     });
+
+    token = encodeURI(token);
+
+    console.log({ link: `http://localhost:3000/resetPassword?token=${token}` });
+
     await this.mailerService.sendMail({
-      to: dbEmail,
+      to: user.email,
       from: 'admin@gmail.com',
-      subject: 'password Reset',
+      subject: 'Password Reset',
       html: `
-      <p>Click this <a href='http://localhost:3000/resetPassword/${token}'>link</a> to reset your password
+      <p>Click this <a href='http://localhost:3000/resetPassword?token=${token}'>link</a> to reset your password
         
       </p>`,
     });
