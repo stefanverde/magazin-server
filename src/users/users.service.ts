@@ -5,8 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
-import { log } from 'console';
-import passport from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +13,7 @@ export class UsersService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserRequestDto) {
+  async create(createUserDto: CreateUserRequestDto) { //register
     const foundUser = await this.findByEmail(createUserDto.email);
 
     if (foundUser) {
@@ -59,6 +57,7 @@ export class UsersService {
   }
 
   findByEmail(email: string) {
+    if(email)
     return this.userRepo.findOne({
       where: {
         email,
@@ -66,10 +65,4 @@ export class UsersService {
     });
   }
 
-  getHello() {
-    return 'hello';
-  }
-  writeAll() {
-    return this.userRepo.find();
-  }
 }

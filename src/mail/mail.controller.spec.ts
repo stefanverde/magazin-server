@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MailController } from './mail.controller';
 
 describe('MailController', () => {
+
   let controller: MailController;
 
   beforeEach(async () => {

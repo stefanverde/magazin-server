@@ -2,18 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { AppController} from './app.controller';
-import { AppService} from './app.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { configuration, IConfig, validate } from './public/configuration';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ItemsModule } from './items/items.module';
-import { Item } from './items/entities/items.entity';
 import { MailModule } from './mail/mail.module';
 
-const ENTITIES = [User, Item];
+const ENTITIES = [User];
 
 @Module({
   imports: [
@@ -46,7 +44,6 @@ const ENTITIES = [User, Item];
     HealthModule,
     UsersModule,
     AuthModule,
-    ItemsModule,
     MailModule,
   ],
   controllers: [AppController],

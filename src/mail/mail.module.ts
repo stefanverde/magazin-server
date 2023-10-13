@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { join } from 'path';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailController } from './mail.controller';
 import { UsersModule } from 'src/users/users.module';
 
@@ -19,14 +17,7 @@ import { UsersModule } from 'src/users/users.module';
           },
         },
         defaults: {
-          from: "verdestefan87@gmail.com"
-        },
-        template: {
-          dir: join(__dirname, "./templates"),
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
-          },
+          from: "admin@gmail.com"
         },
       }),
     }),
