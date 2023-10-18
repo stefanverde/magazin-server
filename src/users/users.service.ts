@@ -11,11 +11,13 @@ import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { secretKey } from 'src/config';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+
   ) {}
 
   async create(createUserDto: CreateUserRequestDto) {
@@ -54,7 +56,7 @@ export class UsersService {
 
   async updatePassword(token: string, data: UpdateUserDto): Promise<string> {
     try {
-      const decodedToken = jwt.verify(decodeURI(token), 'secret-key');
+      const decodedToken = jwt.verify(decodeURI(token), secretKey);
       const userId = decodedToken['userId'];
 
       const user = await this.findOne(userId);
@@ -75,7 +77,8 @@ export class UsersService {
 
   findByEmail(email: string) {
     if (!email) {
-      return;
+      throw new UnauthorizedException('User not found or token expired');
+      // return;
     }
 
     return this.userRepo.findOne({
