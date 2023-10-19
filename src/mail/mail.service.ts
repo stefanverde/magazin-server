@@ -5,16 +5,13 @@ import * as jwt from 'jsonwebtoken';
 import { secretKey } from 'src/config';
 @Injectable()
 export class MailService {
-  
   constructor(
     private readonly mailerService: MailerService,
     private readonly usersService: UsersService,
-  ) {
-    
-  }
+  ) {}
 
-  async sendMail(email: string): Promise<void> {
-
+  async sendMail(body: { email: string }): Promise<void> {
+    const { email } = body;
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {

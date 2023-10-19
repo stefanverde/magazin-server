@@ -17,7 +17,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-
   ) {}
 
   async create(createUserDto: CreateUserRequestDto) {
@@ -54,7 +53,10 @@ export class UsersService {
     return this.userRepo.delete(id);
   }
 
-  async updatePassword(token: string, data: UpdateUserDto): Promise<string> {
+  async updatePassword(body: UpdateUserDto) {
+    const { token, password } = body;
+    console.log(token);
+    console.log(password);
     try {
       const decodedToken = jwt.verify(decodeURI(token), secretKey);
       const userId = decodedToken['userId'];
@@ -64,21 +66,20 @@ export class UsersService {
         throw new NotFoundException('User not found');
       }
 
-      const hash = await bcrypt.hash(data.password, 10);
+      const hash = await bcrypt.hash(password, 10);
       await this.userRepo.update(userId, {
         password: hash,
       });
 
-      return 'Password updated successfully!';
+      return { success: true, message: 'successfully changed' };
     } catch (error) {
-      throw new UnauthorizedException('User not found or token expired');
+      throw new UnauthorizedException('User not foundx or token expired');
     }
   }
 
   findByEmail(email: string) {
     if (!email) {
       throw new UnauthorizedException('User not found or token expired');
-      // return;
     }
 
     return this.userRepo.findOne({

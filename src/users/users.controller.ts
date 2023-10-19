@@ -45,10 +45,12 @@ export class UsersController {
 
   @Put('/update-password')
   async updatePassword(
-    @Query('token') token: string,
-    @Body() data: UpdateUserDto,
-  ): Promise<string> {
-    return this.usersService.updatePassword(token, data);
+    
+    @Body() body: UpdateUserDto,
+  ): Promise<{ success: boolean; message: string; }> {
+    console.log(body);
+
+    return this.usersService.updatePassword(body);
   }
 
   @UseGuards(JwtAuthGuard)
