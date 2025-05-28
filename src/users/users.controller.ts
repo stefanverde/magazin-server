@@ -26,9 +26,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('register')
-  @UseInterceptors(new TransformInterceptor(CreateUserResponseDto))
-  @ApiOkResponse({ type: CreateUserResponseDto })
+  @Post('/register')
   create(@Body() createUserDto: CreateUserRequestDto) {
     return this.usersService.create(createUserDto);
   }
@@ -38,16 +36,21 @@ export class UsersController {
     const user = await this.usersService.findByEmail(email);
     return user;
   }
+
   @Get('/details/:id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
+  @Get('/findAll')
+  findAll() {
+    return this.usersService.findAll();
+  }
+
   @Put('/update-password')
   async updatePassword(
-    
     @Body() body: UpdateUserDto,
-  ): Promise<{ success: boolean; message: string; }> {
+  ): Promise<{ success: boolean; message: string }> {
     console.log(body);
 
     return this.usersService.updatePassword(body);

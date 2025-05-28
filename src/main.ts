@@ -24,11 +24,11 @@ async function bootstrap() {
   app.use(json({ limit: '30mb' }));
   app.use(urlencoded({ extended: true, limit: '30mb' }));
 
-  app.enableVersioning({
-    type: VersioningType.URI,
-    // with this we don't have to specify for each controller the version
-    defaultVersion: '1',
-  });
+  // app.enableVersioning({
+  //   type: VersioningType.URI,
+  //   // with this we don't have to specify for each controller the version
+  //   defaultVersion: '1',
+  // });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -41,9 +41,7 @@ async function bootstrap() {
   const configService: ConfigService<IConfig> = app.get(ConfigService);
   const port = configService.get('PORT');
 
-  await app.listen(port, async () => {
-    console.log(`Your Application is running on: ${await app.getUrl()}`);
-  });
+  await app.listen(port);
 }
 
 bootstrap();

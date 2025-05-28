@@ -11,12 +11,6 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
   @Column({ nullable: false, unique: true })
   email: string;
 
@@ -25,9 +19,4 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  
 }

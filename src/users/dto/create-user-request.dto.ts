@@ -4,16 +4,6 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserRequestDto {
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-
-  @ApiProperty()
   @IsEmail()
   email: string;
 
@@ -21,20 +11,10 @@ export class CreateUserRequestDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-
 }
 
 @Exclude()
 export class CreateUserResponseDto {
-  @Expose()
-  @ApiProperty()
-  firstName: string;
-
-  @Expose()
-  @ApiProperty()
-  lastName: string;
-
   @Expose()
   @ApiProperty()
   email: string;
